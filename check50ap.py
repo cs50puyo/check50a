@@ -1,9 +1,10 @@
 import click
-import os
 import subprocess
 import sys
 
 from clint.textui import colored, puts
+from os import listdir
+from os.path import isfile, join
 
 
 def generate_results(input, output, py_file):
@@ -39,18 +40,28 @@ def report_results(correct, expected_str, actual_str):
               f'Actual output:\n{actual_str}')
 
 
+def get_files_from_path(path):
+    files = [f for f in listdir(path) if isfile(join(path, f))]
+    files.sort()
+    return files
+
+
 @click.command()
 @click.argument('assignment')
 @click.argument('exercise')
 def main(assignment, exercise):
-    input = os.path.join('inputs', assignment, exercise[:-2] + 'txt')
-    solution = os.path.join('solutions', assignment, exercise)
-    expected = 'expected.txt'
-    actual = 'actual.txt'
+    path = join('inputs', assignment, exercise[:-3])
+    inputs = get_files_from_path(path)
 
-    generate_results(input, expected, solution)
-    generate_results(input, actual, exercise)
-    report_results(*compare_results(expected, actual))
+    for input in inputs:
+        solution = join('solutions', assignment, exercise)
+        expected = 'expected.txt'
+        actual = 'actual.txt'
+        input = join(path, input)
+
+        generate_results(input, expected, solution)
+        generate_results(input, actual, exercise)
+        report_results(*compare_results(expected, actual))
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ future_day += today_number
 if future_day == 0:
     future_day = "Sunday"
 elif future_day == 1:
-    future_day = "Mon"
+    future_day = "Monday"
 elif future_day == 2:
     future_day = "Tuesday"
 elif future_day == 3:
