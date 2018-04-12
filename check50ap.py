@@ -23,7 +23,6 @@ def report_results(expected_str, actual_str):
         puts(colored.green('Solution is correct!'))
     else:
         puts(colored.red('Incorrect!'))
-
         print(f'Expected output:\n{expected_str}\n'\
               f'Actual output:\n{actual_str}')
 
