@@ -41,4 +41,4 @@ else:
     month_name = 'December'
     days = 31
 
-print(f'{month_name} has {days} days.')
+print(f'{month_name} {year} has {days} days.')
