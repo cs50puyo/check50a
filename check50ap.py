@@ -39,6 +39,14 @@ def get_files_from_path(path):
     return files
 
 
+def print_header_report(case, input):
+    print(f'Running case {case}:')
+    with open(input) as input:
+        for line in input.read().splitlines():
+            print(line, end='\t')
+    print()
+
+
 @click.command()
 @click.argument('assignment')
 @click.argument('exercise')
@@ -46,20 +54,15 @@ def main(assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
     inputs = get_files_from_path(path)
 
-    for i, input in enumerate(inputs):
+    for case, input in enumerate(inputs, 1):
         solution = join('solutions', assignment, exercise)
         expected = 'expected.txt'
         actual = 'actual.txt'
         input = join(path, input)
 
+        print_header_report(case, input)
         generate_results(input, expected, solution)
         generate_results(input, actual, exercise)
-        print(f'Running case {i}:')
-        with open(input) as input:
-            for line in input.read().splitlines():
-                print(line, end='\t')
-        print()
-
         report_results(*read_results(expected, actual))
         print()
 
