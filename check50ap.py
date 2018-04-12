@@ -7,20 +7,15 @@ from os import listdir
 from os.path import isfile, join
 
 
-def generate_results(input, output, py_file):
+def generate_results(input, py_file):
     with open(input) as infile:
-        with open(output, 'w') as outfile:
-            subprocess.call(['python', py_file],
-                            stdin=infile,
-                            stdout=outfile)
+        proc = subprocess.Popen(['python', py_file],
+                                stdin=infile,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
+    out, err = proc.communicate()
 
-
-def read_results(expected, actual):
-    with open(expected) as expected, open(actual) as actual:
-        expected_str = expected.read()
-        actual_str = actual.read()
-
-    return expected_str, actual_str
+    return out.decode(), err.decode()
 
 
 def report_results(expected_str, actual_str):
@@ -55,14 +50,12 @@ def print_footer():
 
 def report_case(assignment, exercise, input, case):
     solution = join('solutions', assignment, exercise)
-    expected = 'expected.txt'
-    actual = 'actual.txt'
     input = join('inputs', assignment, exercise[:-3], input)
 
     print_header_report(case, input)
-    generate_results(input, expected, solution)
-    generate_results(input, actual, exercise)
-    report_results(*read_results(expected, actual))
+    expected_out, _ = generate_results(input, solution)
+    actual_out, _ = generate_results(input, exercise)
+    report_results(expected_out, actual_out)
     print_footer()
 
 
