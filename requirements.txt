@@ -4,4 +4,6 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+args==0.1.0               # via clint
 click==6.7
+clint==0.5.1
