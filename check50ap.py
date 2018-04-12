@@ -47,7 +47,7 @@ def print_footer():
     print()
 
 
-def report_case(assignment, exercise, input, case):
+def report_case(case, assignment, exercise, input):
     solution = join('solutions', assignment, exercise)
     input = join('inputs', assignment, exercise[:-3], input)
 
@@ -58,9 +58,21 @@ def report_case(assignment, exercise, input, case):
     print_footer()
 
 
-def report_random_case(case):
+def report_random_case(seed, case, assignment, exercise, input=None):
     print('=====================')
     print(f'Running case {case}:')
+    tmp_solution = f'sol_{seed[:-4]}_{exercise}'
+    tmp_exercise = f'exe_{seed[:-4]}_{exercise}'
+
+    seed_file = join('inputs', 'random', seed)
+
+    with open(seed_file) as seed_file:
+        seed = eval(seed_file.read())
+
+    random_header = f'import random\nrandom.seed({seed})'
+
+
+
 
 
 @click.command()
@@ -76,10 +88,13 @@ def main(random, assignment, exercise):
         seeds = get_files_from_path(random_path)
         if len(inputs) in (0, 1):
             for case, seed in enumerate(seeds, 1):
-                report_random_case(case)
+                if inputs:
+                    report_random_case(seed, case, assignment, exercise, inputs[0])
+                else:
+                    report_random_case(seed, case, assignment, exercise)
     else:
         for case, input in enumerate(inputs, 1):
-            report_case(assignment, exercise, input, case)
+            report_case(case, assignment, exercise, input)
 
 
 if __name__ == "__main__":
