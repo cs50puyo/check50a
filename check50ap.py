@@ -58,18 +58,28 @@ def report_case(assignment, exercise, input, case):
     print_footer()
 
 
+def report_random_case(case):
+    print('=====================')
+    print(f'Running case {case}:')
+
+
 @click.command()
 @click.option('--random', is_flag=True)
 @click.argument('assignment')
 @click.argument('exercise')
 def main(random, assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
+    random_path = join('inputs', 'random')
     inputs = get_files_from_path(path)
 
-    for case, input in enumerate(inputs, 1):
-        report_case(assignment, exercise, input, case)
-
-    print(random)
+    if random:
+        seeds = get_files_from_path(random_path)
+        if len(inputs) in (0, 1):
+            for case, seed in enumerate(seeds, 1):
+                report_random_case(case)
+    else:
+        for case, input in enumerate(inputs, 1):
+            report_case(assignment, exercise, input, case)
 
 
 if __name__ == "__main__":
