@@ -29,3 +29,22 @@ $ pip install pip-tools
 ```
 $ pip-sync
 ```
+
+## Usage
+Before using the cli, make sure your virtual environment is
+activated. If not, run the following command:
+```
+$ source .venv/bin/activate
+```
+
+Depending on the _assignment_ and _exercise_ you want to check,
+you can run the following command:
+```
+$ python check50ap.py assignment exercise_XX.py
+```
+
+Where `assignment` is the name of the assignment and `exercise_XX.py` is the `XX` exercise of the assignment.
+For example, if you want to check `exercise_03.py` from `selections` assignment, you have to run:
+```
+$ python check50ap.py selections exercise_03.py
+```
