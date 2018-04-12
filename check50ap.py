@@ -40,11 +40,30 @@ def get_files_from_path(path):
 
 
 def print_header_report(case, input):
+    print('=====================')
     print(f'Running case {case}:')
     with open(input) as input:
         for line in input.read().splitlines():
             print(line, end='\t')
     print()
+
+
+def print_footer():
+    print('=====================')
+    print()
+
+
+def report_case(assignment, exercise, input, case):
+    solution = join('solutions', assignment, exercise)
+    expected = 'expected.txt'
+    actual = 'actual.txt'
+    input = join('inputs', assignment, exercise[:-3], input)
+
+    print_header_report(case, input)
+    generate_results(input, expected, solution)
+    generate_results(input, actual, exercise)
+    report_results(*read_results(expected, actual))
+    print_footer()
 
 
 @click.command()
@@ -55,16 +74,7 @@ def main(assignment, exercise):
     inputs = get_files_from_path(path)
 
     for case, input in enumerate(inputs, 1):
-        solution = join('solutions', assignment, exercise)
-        expected = 'expected.txt'
-        actual = 'actual.txt'
-        input = join(path, input)
-
-        print_header_report(case, input)
-        generate_results(input, expected, solution)
-        generate_results(input, actual, exercise)
-        report_results(*read_results(expected, actual))
-        print()
+        report_case(assignment, exercise, input, case)
 
 
 if __name__ == "__main__":
