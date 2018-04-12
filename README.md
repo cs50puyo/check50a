@@ -37,7 +37,7 @@ activated. If not, run the following command:
 $ source .venv/bin/activate
 ```
 
-Depending on the _assignment_ and _exercise_ you want to check,
+Copy the exercises provided by the students in the root directory of the project, and depending on the _assignment_ and _exercise_ you want to check,
 you can run the following command:
 ```
 $ python check50ap.py assignment exercise_XX.py
