@@ -59,14 +59,17 @@ def report_case(assignment, exercise, input, case):
 
 
 @click.command()
+@click.option('--random', is_flag=True)
 @click.argument('assignment')
 @click.argument('exercise')
-def main(assignment, exercise):
+def main(random, assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
     inputs = get_files_from_path(path)
 
     for case, input in enumerate(inputs, 1):
         report_case(assignment, exercise, input, case)
+
+    print(random)
 
 
 if __name__ == "__main__":
