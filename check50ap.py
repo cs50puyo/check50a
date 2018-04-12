@@ -16,22 +16,15 @@ def generate_results(input, output, py_file):
 
 
 def compare_results(expected, actual):
-    correct = True
     with open(expected) as expected, open(actual) as actual:
-        expected_str = ''
-        actual_str = ''
-        for e, a in zip(expected.read(), actual.read()):
-            expected_str += e
-            actual_str += a
-            if e != a:
-                correct = False
-                break
+        expected_str = expected.read()
+        actual_str = actual.read()
 
-    return correct, expected_str, actual_str
+    return expected_str, actual_str
 
 
-def report_results(correct, expected_str, actual_str):
-    if correct:
+def report_results(expected_str, actual_str):
+    if expected_str == actual_str:
         puts(colored.green('Solution is correct!'))
     else:
         puts(colored.red('Incorrect!'))
