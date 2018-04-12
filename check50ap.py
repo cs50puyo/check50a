@@ -34,11 +34,9 @@ def report_results(correct, expected_str, actual_str):
         puts(colored.green('Solution is correct!'))
     else:
         puts(colored.red('Incorrect!'))
-        print('Expected output:')
-        print(expected_str)
-        print()
-        print('Actual output:')
-        print(actual_str)
+
+        print(f'Expected output:\n{expected_str}\n\n'\
+              f'Actual output:\n{actual_str}')
 
 
 @click.command()
