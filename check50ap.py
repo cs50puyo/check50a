@@ -15,7 +15,7 @@ def generate_results(input, output, py_file):
                             stdout=outfile)
 
 
-def compare_results(expected, actual):
+def read_results(expected, actual):
     with open(expected) as expected, open(actual) as actual:
         expected_str = expected.read()
         actual_str = actual.read()
@@ -29,7 +29,7 @@ def report_results(expected_str, actual_str):
     else:
         puts(colored.red('Incorrect!'))
 
-        print(f'Expected output:\n{expected_str}\n\n'\
+        print(f'Expected output:\n{expected_str}\n'\
               f'Actual output:\n{actual_str}')
 
 
@@ -60,7 +60,7 @@ def main(assignment, exercise):
                 print(line, end='\t')
         print()
 
-        report_results(*compare_results(expected, actual))
+        report_results(*read_results(expected, actual))
         print()
 
 
