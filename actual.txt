@@ -1,2 +1,2 @@
 Enter today's day: Enter the number of days elapsed since today: 
-Today is Saturday and the future day is 11
+Today is Friday and the future day is 55

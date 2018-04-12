@@ -53,7 +53,7 @@ def main(assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
     inputs = get_files_from_path(path)
 
-    for input in inputs:
+    for i, input in enumerate(inputs):
         solution = join('solutions', assignment, exercise)
         expected = 'expected.txt'
         actual = 'actual.txt'
@@ -61,7 +61,14 @@ def main(assignment, exercise):
 
         generate_results(input, expected, solution)
         generate_results(input, actual, exercise)
+        print(f'Running case {i}:')
+        with open(input) as input:
+            for line in input.read().splitlines():
+                print(line, end='\t')
+        print()
+
         report_results(*compare_results(expected, actual))
+        print()
 
 
 if __name__ == "__main__":
