@@ -80,6 +80,15 @@ def get_seed(seed_file):
     return seed
 
 
+def write_file_with_fixed_seed(filename, tpm_filename, seed):
+    random_header = f'import random\nrandom.seed({seed})\n'
+
+    with open(filename) as f:
+        f_str = f.read()
+        with open(tpm_filename, 'w') as tmp:
+            tmp.write(random_header + f_str)
+
+
 def report_random_case(seed, case, assignment, exercise, input=None):
     solution = join('solutions', assignment, exercise)
     if input:
@@ -89,17 +98,8 @@ def report_random_case(seed, case, assignment, exercise, input=None):
     tmp_exercise = f'exe_{seed[:-4]}_{exercise}'
     seed = get_seed(seed)
 
-    random_header = f'import random\nrandom.seed({seed})\n'
-
-    with open(solution) as sol:
-        solution_str = sol.read()
-        with open(tmp_solution, 'w') as tmp:
-            tmp.write(random_header + solution_str)
-
-    with open(exercise) as exer:
-        exercise_str = exer.read()
-        with open(tmp_exercise, 'w') as tmp:
-            tmp.write(random_header + exercise_str)
+    write_file_with_fixed_seed(solution, tmp_solution, seed)
+    write_file_with_fixed_seed(exercise, tmp_exercise, seed)
 
     print_header_report(case, input)
     expected_out, _ = generate_results(tmp_solution, input)
