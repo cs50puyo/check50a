@@ -134,6 +134,7 @@ def report_random_cases(inputs, assignment, exercise):
             else:
                 report_random_case(seed, case, assignment, exercise)
 
+
 @click.command()
 @click.option('--random', is_flag=True)
 @click.argument('assignment')
