@@ -72,8 +72,7 @@ def report_case(case, assignment, exercise, input):
     solution = join('solutions', assignment, exercise)
     input = join('inputs', assignment, exercise[:-3], input)
 
-    expected_out, _ = generate_results(solution, input)
-    actual_out, _ = generate_results(exercise, input)
+    expected_out, actual_out = generate_ouputs(solution, exercise, input)
     print_report(case, expected_out, actual_out, input)
 
 
@@ -93,19 +92,26 @@ def write_file_with_fixed_seed(filename, tpm_filename, seed):
             tmp.write(random_header + f_str)
 
 
+def generate_ouputs(solution, exercise, input):
+    expected, _ = generate_results(solution, input)
+    actual, _ = generate_results(exercise, input)
+
+    return expected, actual
+
+
 def report_random_case(seed, case, assignment, exercise, input=None):
-    solution = join('solutions', assignment, exercise)
     if input:
         input = join('inputs', assignment, exercise[:-3], input)
 
+    solution = join('solutions', assignment, exercise)
     tmp_solution = f's_{seed[:-4]}_{exercise}'
     tmp_exercise = f'e_{seed[:-4]}_{exercise}'
     seed = get_seed(seed)
+
     write_file_with_fixed_seed(solution, tmp_solution, seed)
     write_file_with_fixed_seed(exercise, tmp_exercise, seed)
 
-    expected_out, _ = generate_results(tmp_solution, input)
-    actual_out, _ = generate_results(tmp_exercise, input)
+    expected_out, actual_out = generate_ouputs(tmp_solution, tmp_exercise, input)
     remove_silently(tmp_solution)
     remove_silently(tmp_exercise)
 
