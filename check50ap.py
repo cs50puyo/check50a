@@ -82,18 +82,15 @@ def report_random_case(seed, case, assignment, exercise, input=None):
 
     with open(solution) as sol:
         solution_str = sol.read()
+        with open(tmp_solution, 'w') as tmp:
+            tmp.write(random_header + solution_str)
 
     with open(exercise) as exer:
         exercise_str = exer.read()
+        with open(tmp_exercise, 'w') as tmp:
+            tmp.write(random_header + exercise_str)
 
-    tmp_sol_str = random_header + solution_str
-    tmp_exer_str = random_header + exercise_str
 
-    with open(tmp_solution, 'w') as tmp:
-        tmp.write(tmp_sol_str)
-
-    with open(tmp_exercise, 'w') as tmp:
-        tmp.write(tmp_exer_str)
 
 
     if input is None:
