@@ -55,6 +55,13 @@ def print_footer():
     print()
 
 
+def remove_silently(filename):
+    try:
+        os.remove(filename)
+    except OSError:
+        pass
+
+
 def report_case(case, assignment, exercise, input):
     solution = join('solutions', assignment, exercise)
     input = join('inputs', assignment, exercise[:-3], input)
@@ -90,28 +97,14 @@ def report_random_case(seed, case, assignment, exercise, input=None):
         with open(tmp_exercise, 'w') as tmp:
             tmp.write(random_header + exercise_str)
 
-
-
-
-    if input is None:
-        expected_out, _ = generate_results(tmp_solution)
-        actual_out, _ = generate_results(tmp_exercise)
-    else:
-        expected_out, _ = generate_results(tmp_solution, input)
-        actual_out, _ = generate_results(tmp_exercise, input)
-
-    try:
-        os.remove(tmp_solution)
-    except OSError:
-        pass
-
-    try:
-        os.remove(tmp_exercise)
-    except OSError:
-        pass
+    expected_out, _ = generate_results(tmp_solution, input)
+    actual_out, _ = generate_results(tmp_exercise, input)
 
     report_results(expected_out, actual_out)
     print_footer()
+
+    remove_silently(tmp_solution)
+    remove_silently(tmp_exercise)
 
 
 @click.command()
