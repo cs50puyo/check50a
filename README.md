@@ -37,8 +37,10 @@ activated. If not, run the following command:
 $ source .venv/bin/activate
 ```
 
-Copy the exercises provided by the students in the root directory of the project, and depending on the _assignment_ and _exercise_ you want to check,
-you can run the following command:
+Copy the exercises provided by the students in the root directory of the project.
+
+### Exercises that don't use the random module
+Depending on the _assignment_ and _exercise_ you want to check, you can run the following command:
 ```
 $ python check50ap.py assignment exercise_XX.py
 ```
@@ -47,4 +49,15 @@ Where `assignment` is the name of the assignment and `exercise_XX.py` is the `XX
 For example, if you want to check `exercise_03.py` from `selections` assignment, you have to run:
 ```
 $ python check50ap.py selections exercise_03.py
+```
+
+### Exercises that use the random module
+When the exercise requires the use of the built-in module `random`, use the optional argument `--random` as follows:
+```
+$ python check50ap.py --random assignment exercise_XX.py
+```
+
+For example, if you want to check `exercise_06.py` from `selections` assignment, you have to run:
+```
+$ python check50ap.py --random selections exercise_06.py
 ```
