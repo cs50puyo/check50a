@@ -62,15 +62,19 @@ def remove_silently(filename):
         pass
 
 
+def print_report(case, expected_out, actual_out, input):
+    print_header_report(case, input)
+    report_results(expected_out, actual_out)
+    print_footer()
+
+
 def report_case(case, assignment, exercise, input):
     solution = join('solutions', assignment, exercise)
     input = join('inputs', assignment, exercise[:-3], input)
 
-    print_header_report(case, input)
     expected_out, _ = generate_results(solution, input)
     actual_out, _ = generate_results(exercise, input)
-    report_results(expected_out, actual_out)
-    print_footer()
+    print_report(case, expected_out, actual_out, input)
 
 
 def get_seed(seed_file):
@@ -94,21 +98,18 @@ def report_random_case(seed, case, assignment, exercise, input=None):
     if input:
         input = join('inputs', assignment, exercise[:-3], input)
 
-    tmp_solution = f'sol_{seed[:-4]}_{exercise}'
-    tmp_exercise = f'exe_{seed[:-4]}_{exercise}'
+    tmp_solution = f's_{seed[:-4]}_{exercise}'
+    tmp_exercise = f'e_{seed[:-4]}_{exercise}'
     seed = get_seed(seed)
-
     write_file_with_fixed_seed(solution, tmp_solution, seed)
     write_file_with_fixed_seed(exercise, tmp_exercise, seed)
 
-    print_header_report(case, input)
     expected_out, _ = generate_results(tmp_solution, input)
     actual_out, _ = generate_results(tmp_exercise, input)
-    report_results(expected_out, actual_out)
-    print_footer()
-
     remove_silently(tmp_solution)
     remove_silently(tmp_exercise)
+
+    print_report(case, expected_out, actual_out, input)
 
 
 @click.command()
