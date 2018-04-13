@@ -118,26 +118,34 @@ def report_random_case(seed, case, assignment, exercise, input=None):
     print_report(case, expected_out, actual_out, input)
 
 
+def report_non_random_cases(inputs, assignment, exercise):
+    for case, input in enumerate(inputs, 1):
+        report_case(case, assignment, exercise, input)
+
+
+def report_random_cases(inputs, assignment, exercise):
+    random_path = join('inputs', 'random')
+    seeds = get_files_from_path(random_path)
+    if len(inputs) in (0, 1):
+        for case, seed in enumerate(seeds, 1):
+            if inputs:
+                report_random_case(seed, case, assignment,
+                                   exercise, inputs[0])
+            else:
+                report_random_case(seed, case, assignment, exercise)
+
 @click.command()
 @click.option('--random', is_flag=True)
 @click.argument('assignment')
 @click.argument('exercise')
 def main(random, assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
-    random_path = join('inputs', 'random')
     inputs = get_files_from_path(path)
 
     if random:
-        seeds = get_files_from_path(random_path)
-        if len(inputs) in (0, 1):
-            for case, seed in enumerate(seeds, 1):
-                if inputs:
-                    report_random_case(seed, case, assignment, exercise, inputs[0])
-                else:
-                    report_random_case(seed, case, assignment, exercise)
+        report_random_cases(inputs, assignment, exercise)
     else:
-        for case, input in enumerate(inputs, 1):
-            report_case(case, assignment, exercise, input)
+        report_non_random_cases(inputs, assignment, exercise)
 
 
 if __name__ == "__main__":
