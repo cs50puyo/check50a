@@ -73,17 +73,21 @@ def report_case(case, assignment, exercise, input):
     print_footer()
 
 
+def get_seed(seed_file):
+    with open(join('inputs', 'random', seed_file)) as seed_file:
+        seed = eval(seed_file.read())
+
+    return seed
+
+
 def report_random_case(seed, case, assignment, exercise, input=None):
-    print_header_report(case, input)
     solution = join('solutions', assignment, exercise)
+    if input:
+        input = join('inputs', assignment, exercise[:-3], input)
 
     tmp_solution = f'sol_{seed[:-4]}_{exercise}'
     tmp_exercise = f'exe_{seed[:-4]}_{exercise}'
-
-    seed_file = join('inputs', 'random', seed)
-
-    with open(seed_file) as seed_file:
-        seed = eval(seed_file.read())
+    seed = get_seed(seed)
 
     random_header = f'import random\nrandom.seed({seed})\n'
 
@@ -97,9 +101,9 @@ def report_random_case(seed, case, assignment, exercise, input=None):
         with open(tmp_exercise, 'w') as tmp:
             tmp.write(random_header + exercise_str)
 
+    print_header_report(case, input)
     expected_out, _ = generate_results(tmp_solution, input)
     actual_out, _ = generate_results(tmp_exercise, input)
-
     report_results(expected_out, actual_out)
     print_footer()
 
