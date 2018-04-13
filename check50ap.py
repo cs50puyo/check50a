@@ -1,18 +1,25 @@
 import click
+import os
 import subprocess
 import sys
+import tempfile
 
 from clint.textui import colored, puts
 from os import listdir
 from os.path import isfile, join
 
 
-def generate_results(input, py_file):
-    with open(input) as infile:
+def generate_results(py_file, input=None):
+    if input is None:
         proc = subprocess.Popen(['python', py_file],
-                                stdin=infile,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
+    else:
+        with open(input) as infile:
+            proc = subprocess.Popen(['python', py_file],
+                                    stdin=infile,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
     out, err = proc.communicate()
 
     return out.decode(), err.decode()
@@ -33,13 +40,14 @@ def get_files_from_path(path):
     return files
 
 
-def print_header_report(case, input):
+def print_header_report(case, input=None):
     print('=====================')
     print(f'Running case {case}:')
-    with open(input) as input:
-        for line in input.read().splitlines():
-            print(line, end='\t')
-    print()
+    if input is not None:
+        with open(input) as input:
+            for line in input.read().splitlines():
+                print(line, end='\t')
+            print()
 
 
 def print_footer():
@@ -52,15 +60,16 @@ def report_case(case, assignment, exercise, input):
     input = join('inputs', assignment, exercise[:-3], input)
 
     print_header_report(case, input)
-    expected_out, _ = generate_results(input, solution)
-    actual_out, _ = generate_results(input, exercise)
+    expected_out, _ = generate_results(solution, input)
+    actual_out, _ = generate_results(exercise, input)
     report_results(expected_out, actual_out)
     print_footer()
 
 
 def report_random_case(seed, case, assignment, exercise, input=None):
-    print('=====================')
-    print(f'Running case {case}:')
+    print_header_report(case, input)
+    solution = join('solutions', assignment, exercise)
+
     tmp_solution = f'sol_{seed[:-4]}_{exercise}'
     tmp_exercise = f'exe_{seed[:-4]}_{exercise}'
 
@@ -69,10 +78,43 @@ def report_random_case(seed, case, assignment, exercise, input=None):
     with open(seed_file) as seed_file:
         seed = eval(seed_file.read())
 
-    random_header = f'import random\nrandom.seed({seed})'
+    random_header = f'import random\nrandom.seed({seed})\n'
+
+    with open(solution) as sol:
+        solution_str = sol.read()
+
+    with open(exercise) as exer:
+        exercise_str = exer.read()
+
+    tmp_sol_str = random_header + solution_str
+    tmp_exer_str = random_header + exercise_str
+
+    with open(tmp_solution, 'w') as tmp:
+        tmp.write(tmp_sol_str)
+
+    with open(tmp_exercise, 'w') as tmp:
+        tmp.write(tmp_exer_str)
 
 
+    if input is None:
+        expected_out, _ = generate_results(tmp_solution)
+        actual_out, _ = generate_results(tmp_exercise)
+    else:
+        expected_out, _ = generate_results(tmp_solution, input)
+        actual_out, _ = generate_results(tmp_exercise, input)
 
+    try:
+        os.remove(tmp_solution)
+    except OSError:
+        pass
+
+    try:
+        os.remove(tmp_exercise)
+    except OSError:
+        pass
+
+    report_results(expected_out, actual_out)
+    print_footer()
 
 
 @click.command()
