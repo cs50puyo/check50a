@@ -6,7 +6,7 @@ if month == 1:
     days = 31
 elif month == 2:
     month_name = 'February'
-    if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+    if year % 400 == 0  or (year % 4 == 0 and year % 100 != 0):
         days = 29
     else:
         days = 28
