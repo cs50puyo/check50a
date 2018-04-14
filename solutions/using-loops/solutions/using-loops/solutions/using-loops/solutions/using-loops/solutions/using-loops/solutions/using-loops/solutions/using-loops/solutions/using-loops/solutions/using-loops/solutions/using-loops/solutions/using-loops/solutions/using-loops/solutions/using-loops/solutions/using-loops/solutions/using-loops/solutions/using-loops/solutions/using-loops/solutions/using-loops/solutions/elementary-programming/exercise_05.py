@@ -1,0 +1,6 @@
+print('a\tb\ta**b')
+print('1\t2\t', 1 ** 2, sep='')
+print('2\t3\t', 2 ** 3, sep='')
+print('3\t4\t', 3 ** 4, sep='')
+print('4\t5\t', 4 ** 5, sep='')
+print('5\t6\t', 5 ** 6, sep='')
