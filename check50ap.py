@@ -1,11 +1,10 @@
 import click
-import os
 import subprocess
 import sys
 import tempfile
 
 from clint.textui import colored, puts
-from os import listdir
+from os import listdir, remove
 from os.path import isfile, join
 
 
@@ -57,7 +56,7 @@ def print_footer():
 
 def remove_silently(filename):
     try:
-        os.remove(filename)
+        remove(filename)
     except OSError:
         pass
 
