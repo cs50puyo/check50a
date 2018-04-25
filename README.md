@@ -40,7 +40,10 @@ $ source .venv/bin/activate
 Copy the exercises provided by the students in the root directory of the project.
 
 ### Exercises that don't use the random module
-Depending on the _assignment_ and _exercise_ you want to check, you can run the following command:
+#### Exercises that require input from user
+When the exercise requires input from the user, depending on the
+_assignment_ and _exercise_ you want to check, you can run the
+following command:
 ```
 $ python check50ap.py assignment exercise_XX.py
 ```
@@ -51,13 +54,39 @@ For example, if you want to check `exercise_03.py` from `selections` assignment,
 $ python check50ap.py selections exercise_03.py
 ```
 
+#### Exercises that don't require input from user
+When the exercise does not require input from the user, depending on the
+_assignment_ and _exercise_ you want to check, use the optional argument
+`--no-input` as follows:
+```
+$ python check50ap.py --no-input assignment exercise_XX.py
+```
+Where `assignment` is the name of the assignment and `exercise_XX.py` is the `XX` exercise of the assignment.
+For example, if you want to check `exercise_01.py` from `print-statement` assignment, you have to run:
+```
+$ python check50ap.py --no-input print-statement exercise_01.py
+```
+
 ### Exercises that use the random module
-When the exercise requires the use of the built-in module `random`, use the optional argument `--random` as follows:
+#### Exercises that require input from user
+When the exercise requires the use of the built-in module `random`, and it requires
+input from user, use the optional argument `--random` as follows:
 ```
 $ python check50ap.py --random assignment exercise_XX.py
 ```
 
+For example, if you want to check `exercise_11.py` from `loops` assignment, you have to run:
+```
+$ python check50ap.py --random loops exercise_11.py
+```
+#### Exercises that don't require input from user
+When the exercise requires the use of the built-in module `random`, and it does not require
+input from user, use the optional arguments `--random` and `--no-input` as follows:
+```
+$ python check50ap.py --random --no-input assignment exercise_XX.py
+```
+
 For example, if you want to check `exercise_06.py` from `selections` assignment, you have to run:
 ```
-$ python check50ap.py --random selections exercise_06.py
+$ python check50ap.py --random --no-input selections exercise_06.py
 ```
