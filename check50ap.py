@@ -39,9 +39,11 @@ def get_files_from_path(path):
     return files
 
 
-def print_header_report(case, input=None):
+def print_header_report(case=None, input=None):
     print('=====================')
-    print(f'Running case {case}:')
+    if case:
+        print(f'Running case {case}:')
+
     if input is not None:
         with open(input) as input:
             for line in input.read().splitlines():
@@ -61,18 +63,19 @@ def remove_silently(filename):
         pass
 
 
-def print_report(case, expected_out, actual_out, input):
+def print_report(expected_out, actual_out, input, case=None):
     print_header_report(case, input)
     report_results(expected_out, actual_out)
     print_footer()
 
 
-def report_case(case, assignment, exercise, input):
+def report_case(assignment, exercise, input=None, case=None):
     solution = join('solutions', assignment, exercise)
-    input = join('inputs', assignment, exercise[:-3], input)
+    if input:
+        input = join('inputs', assignment, exercise[:-3], input)
 
     expected_out, actual_out = generate_ouputs(solution, exercise, input)
-    print_report(case, expected_out, actual_out, input)
+    print_report(expected_out, actual_out, input, case)
 
 
 def get_seed(seed_file):
@@ -114,12 +117,15 @@ def report_random_case(seed, case, assignment, exercise, input=None):
     remove_silently(tmp_solution)
     remove_silently(tmp_exercise)
 
-    print_report(case, expected_out, actual_out, input)
+    print_report(expected_out, actual_out, input, case)
 
 
 def report_non_random_cases(inputs, assignment, exercise):
-    for case, input in enumerate(inputs, 1):
-        report_case(case, assignment, exercise, input)
+    if inputs:
+        for case, input in enumerate(inputs, 1):
+            report_case(assignment, exercise, input, case)
+    else:
+        report_case(assignment, exercise)
 
 
 def report_random_cases(inputs, assignment, exercise):
