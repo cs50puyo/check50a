@@ -135,10 +135,11 @@ def report_random_cases(inputs, assignment, exercise):
 
 
 @click.command()
+@click.option('--no-input', is_flag=True)
 @click.option('--random', is_flag=True)
 @click.argument('assignment')
 @click.argument('exercise')
-def main(random, assignment, exercise):
+def main(no_input, random, assignment, exercise):
     path = join('inputs', assignment, exercise[:-3])
     inputs = get_files_from_path(path)
 
