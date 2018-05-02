@@ -2,9 +2,12 @@ lines = eval(input('Enter number of lines: '))
 
 for i in range(1, lines + 1):
     # initial spacing
-    for j in range(10, lines + 1):
-        if i < j:
-            print(' ', end='')
+    if lines >= 10:
+        if 1 <= i <= 9:
+            spacing = lines - 9
+        else:
+            spacing = lines - i
+        print(' ' * spacing, end='')
 
     # first part of the pyramid
     for j in range(lines, 0, -1):
