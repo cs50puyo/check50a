@@ -5,6 +5,6 @@ side2 = ((x2 - x3) ** 2 + (y2 - y3) ** 2) ** 0.5
 side3 = ((x3 - x1) ** 2 + (y3 - y1) ** 2) ** 0.5
 
 s = (side1 + side2 + side3) / 2
-area = (s * (s - side1) * (s - side2) * (s - side3)) ** 0.5
+area = round((s * (s - side1) * (s - side2) * (s - side3)) ** 0.5, 3)
 
 print('The area of the triangle is', area)
